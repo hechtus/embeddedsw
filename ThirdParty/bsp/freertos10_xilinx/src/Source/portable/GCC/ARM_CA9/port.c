@@ -355,6 +355,9 @@ int32_t lReturn;
 	lReturn = prvEnsureInterruptControllerIsInitialised();
 	if( lReturn == pdPASS )
 	{
+		/* Clear/acknowledge any pending interrupts first */
+		XScuGic_CPUWriteReg( &xInterruptController, XSCUGIC_EOI_OFFSET, ucInterruptID );
+		/* Install interrupt handler */
 		lReturn = XScuGic_Connect( &xInterruptController, ucInterruptID, pxHandler, pvCallBackRef );
 	}
 	if( lReturn == XST_SUCCESS )
